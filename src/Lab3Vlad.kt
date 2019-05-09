@@ -69,12 +69,11 @@ object Lab3Vlad {
         else if (b < a && b > 0) b
         else a
 
-    tailrec fun minFlow(a: CCIChain?, c: CIChain, min: Int = most_positive_fixnum): Int {
-        return when (a) {
+    tailrec fun minFlow(a: CCIChain?, c: CIChain, min: Int = most_positive_fixnum): Int =
+        when (a) {
             null -> min
             else -> minFlow(a.tail, c, minPositive(min, flow(a.head.head, a.head.tail?.head, c)))
         }
-    }
 
     fun middle(from: Int, to: Int, c: CIChain): IChain? =
         notInList(numbers(lengthOf(c)), cons(to, cons(from, null)))
