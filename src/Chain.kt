@@ -1,6 +1,10 @@
 import java.lang.IllegalStateException
 import java.lang.StringBuilder
 
+typealias IChain = Chain<Int>
+typealias CIChain = Chain<Chain<Int>>
+typealias CCIChain = Chain<Chain<Chain<Int>>>
+
 data class Chain<T>(
     val head: T,
     val tail: Chain<T>? = null

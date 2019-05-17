@@ -2,10 +2,6 @@ fun main() {
     Lab3Vlad.main()
 }
 
-typealias IChain = Chain<Int>
-typealias CIChain = Chain<Chain<Int>>
-typealias CCIChain = Chain<Chain<Chain<Int>>>
-
 object Lab3Vlad {
 
     val most_positive_fixnum = Int.MAX_VALUE // most-positive-fixnum in CLisp
