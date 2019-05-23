@@ -119,7 +119,7 @@
        )
 
 (defun addAllCuts (from to a min)
-       (princ (format nil "~D <=> ~D -- ~:D~%~%" min (flow (caar a) (cadar a) 0 (caar a)) a))
+       ;(princ (format nil "~D <=> ~D -- ~:D~%~%" min (flow (caar a) (cadar a) 0 (caar a)) a))
        (cond
         ((null a) nil)
         ((eql min (flow (caar a) (cadar a) 0 (caar a)))
@@ -131,7 +131,7 @@
        )
        )
 
-(defun allCuts (from to)
+(de fun allCuts (from to)
        (addAllCuts from to (decorate from to (comb nil nil (middle from to)))
                    (minFlow (decorate from to (comb nil nil (middle from to))) most-positive-fixnum))
        )

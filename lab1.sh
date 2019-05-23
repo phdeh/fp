@@ -1,11 +1,8 @@
 #!/bin/bash
-cat src/lab3Vlad.scm | clisp -m1024MB
+#cat src/lab4.scm | clisp -m1024MB
 
-#cd src
-#clisp -c lab3Vlad.scm
-#clisp lab3Vlad.fas
+cd src
+swipl --quiet -s lab5.pl <<EOF
+result(S1, S2, S3, S4, S5).
 
-#cd src
-#swipl <<EOF
-#[lab6].
-#EOF
+EOF
