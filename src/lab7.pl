@@ -1,0 +1,6 @@
+
+% badPosition
+
+% checkPositions
+
+% putQueen
