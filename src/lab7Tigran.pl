@@ -19,6 +19,8 @@ station(mayakovskaya).
 station(proletarskaya).
 station(gostiny_dvor).
 
+%%%%
+
 distance(tekhnologichesky_institut_1, ploschad_vosstaniya, 2).
 
 %%%%
