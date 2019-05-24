@@ -64,18 +64,18 @@ object Lab3Tigran {
            1 | /     |
              D    —  G
 
-        F(O, Q, R, P, D):
-             Если {<O} \ O \ P = D):
-                    F(<Q, Q>, R + O, P, D)
+        F(O, Q, P, D, R):
+             Если {<O} \ O \ P = D:
+                    F(<Q, Q>, P, D, R + O)
 
              Если {<O} \ O \ P ≠ 0:
-                    F(O, Q, R, P + + <({<O} \ O \ P), D)
+                    F(O, Q, P + <({<O} \ O \ P), D, R)
 
              Если {<O} \ O \ P = 0, P ≠ 0:
-                    F(O, Q + [<P], R, P>, D)
+                    F(O, Q + [<P], P>, D, R)
 
              Если {<O} \ O \ P = 0, P = 0:
-                    F(<Q, Q>, R, P, D)
+                    F(<Q, Q>, P, D, R)
 
              Если {<O} \ O \ P = 0, P = 0, Q = 0:
                     R
