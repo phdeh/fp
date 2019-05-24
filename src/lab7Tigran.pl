@@ -63,9 +63,7 @@ appendIfNotEmpty(A, B, Result) :-
 
 ways(From, To, Result) :- ways(From, To, From, [], [], [], Result).
 
-ways(From, To, To, Potential, Visited, ActualResult, Result) :-
-    %format("!!! C0 From='~w' To='~w' Current='~w' Potential='~w' Visited='~w' ActualResult='~w' Result='~w'~n",
-    % [From, To, To, Potential, Visited, ActualResult, Result]),
+ways(_, To, To, _, Visited, ActualResult, Result) :-
     append(Visited, [To], Visited1),
     append(ActualResult, [Visited1], Result).
 
@@ -75,20 +73,16 @@ ways(From, To, Current, Potential, Visited, ActualResult, Result) :-
     not(Neighbors = []),
     append(Visited, [Current], Visited1),
     not(member(Current, Visited)),
-    %format("    C1 From='~w' To='~w' Current='~w' Potential='~w' Visited='~w' ActualResult='~w' Result='~w'~n",
-    % [From, To, Current, Potential, Visited, ActualResult, Result]),
     ways(From, To, [], Neighbors, Visited1, ActualResult, Result).
 
 ways(From, To, Current, Potential, Visited, ActualResult, Result) :-
     Current = [],
     not(Potential = []),
     [PotentialH|PotentialT] = Potential,
-    %format("    C2 From='~w' To='~w' Current='~w' Potential='~w' Visited='~w' ActualResult='~w' Result='~w'~n",
-    %     [From, To, Current, Potential, Visited, ActualResult, Result]),
     ways(From, To, PotentialH, [], Visited, ActualResult, Result1),
     ways(From, To, [], PotentialT, Visited, Result1, Result).
 
-ways(From, To, Current, Potential, Visited, ActualResult, Result) :- Result = ActualResult.
+ways(_, _, _, _, _, ActualResult, Result) :- Result = ActualResult.
 
 lengthOfWay([_], 0).
 
@@ -100,23 +94,22 @@ lengthOfWay([A, B|C], Result) :-
     lengthOfWay(C1, Result2),
     Result is Result1 + Result2.
 
-minWayLength([], 0).
+minWayLength([], Min, Min).
 
 minWayLength([Way|Other], Min, Result) :-
     lengthOfWay(Way, Length),
-    Length > Min,
-    Result = Min.
+    Length >= Min,
+    minWayLength(Other, Min, Result).
 
 minWayLength([Way|Other], Min, Result) :-
     lengthOfWay(Way, Length),
     Length < Min,
-    Result = Length.
+    minWayLength(Other, Length, Result).
 
 waysWithLength([], _, Left, Left).
 
 waysWithLength([Way|Other], Min, Left, Result) :-
     lengthOfWay(Way, Length),
-    %format("~w -- ~w~n", [Length, Way]),
     Length = Min,
     append(Left, [Way], Left1),
     waysWithLength(Other, Min, Left1, Result).
