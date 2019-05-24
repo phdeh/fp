@@ -1,16 +1,22 @@
 #!/bin/bash
 cd src
-swipl --quiet -s lab6.pl <<EOF
-belongs(b, [a, b, c], X).
+swipl --quiet -s lab7.pl <<EOF
+%badPosition(1, 1, 2, 1, X).
 
-belongs(b, [a, d, c], X).
+%badPosition(1, 1, 2, 2, X).
 
-nextIntersection([a, b, c, d, e], [c, d, e, f], X).
+%badPosition(1, 1, 2, 3, X).
 
-nextIntersection([d, e], [c, d, e, f], X).
+%checkPositions(1, 1, [], X).
 
-nextIntersection([e], [c, d, e, f], X).
+%checkPositions(1, 1, [[2, 2]], X).
 
-intersections([a, b, c, d, e], [c, d, e, f], X).
+%checkPositions(1, 1, [[2, 1], [2, 2]], X).
+
+%checkPositions(1, 1, [[2, 1], [2, 3]], X).
+
+%checkPositions(1, 1, [[2, 2], [3, 3], [4, 4]], X).
+
+queens.
 
 EOF

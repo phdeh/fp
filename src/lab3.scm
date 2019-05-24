@@ -11,15 +11,15 @@
        (COND
          ((= X1 X2) T)
          ((= Y1 Y2) T)
-         ((= (ABS (- X1 X2)) (ABS (- Y1 Y2))) T)
-         ;x`((AND (AND (= (+ (ABS (- X1 X2)) (ABS (- Y1 Y2))) 3) (/= (- X1 X2) 0)) (/= (- Y1 Y2) 0)) T)
+         ;((= (ABS (- X1 X2)) (ABS (- Y1 Y2))) T)
+         ((AND (AND (= (+ (ABS (- X1 X2)) (ABS (- Y1 Y2))) 3) (/= (- X1 X2) 0)) (/= (- Y1 Y2) 0)) T)
          (T NIL)
          )
        )
 
 (DEFUN CHECK_POSITIONS (X Y CHAIN)
        (COND
-         ((EQL CHAIN NIL) T)
+         ((NULL CHAIN) T)
          ((BAD_POSITION X Y (CAAR CHAIN) (CADAR CHAIN)) NIL)
          (T (CHECK_POSITIONS X Y (CDR CHAIN)))
          )
@@ -27,7 +27,7 @@
 
 (DEFUN PUT_QUEEN (X Y CHAIN)
        (COND
-         ((EQL CHAIN NIL) (PUT_QUEEN 0 1 (CONS (CONS X (CONS Y NIL)) NIL)))
+         ((NULL CHAIN) (PUT_QUEEN 0 1 (CONS (CONS X (CONS Y NIL)) NIL)))
          ((EQL Y 8) CHAIN)
          ((EQL X 8) (PUT_QUEEN (+ (CAAR CHAIN) 1) (CADAR CHAIN) (CDR CHAIN)))
          ((CHECK_POSITIONS X Y CHAIN) (PUT_QUEEN 0 (+ Y 1) (CONS (CONS X (CONS Y NIL)) CHAIN)))

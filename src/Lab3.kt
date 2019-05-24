@@ -7,7 +7,7 @@ fun main() {
 fun badPosition(x1: Int, y1: Int, x2: Int, y2: Int) = when {
     (x1 == x2) -> true
     (y1 == y2) -> true
-    (abs(x1 - x2) == abs(y1 - y2)) -> true
+    //(abs(x1 - x2) == abs(y1 - y2)) -> true
     (abs(x1 - x2) + abs(y1 - y2) == 3 && x1 - x2 != 0 && y1 - y2 != 0) -> true
     else -> false
 }
