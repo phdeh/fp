@@ -37,9 +37,11 @@
 
 (DEFUN ALL_QUEENS (X)
        (COND
-         ((>= X 0) (CONS (PUT_QUEEN X 0 NIL) (ALL_QUEENS (- X 1))))
+         ((<= X 8) (CONS (PUT_QUEEN X 0 NIL) (ALL_QUEENS (+ X 1))))
          (T NIL)
          )
        )
 
-(ALL_QUEENS 7)
+(DEFUN QUEENS () (ALL_QUEENS 0))
+
+(QUEENS)

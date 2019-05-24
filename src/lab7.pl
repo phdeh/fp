@@ -65,12 +65,12 @@ putQueen(X, Y, Chain, Result) :-
 
 %allQueens
 
-allQueens(0).
+allQueens(8).
 
 allQueens(X) :-
     putQueen(X, 0, [], Current),
     writeln(Current),
-    X1 is X - 1,
+    X1 is X + 1,
     allQueens(X1).
 
-queens :- allQueens(7).
+queens :- allQueens(0).
