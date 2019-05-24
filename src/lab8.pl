@@ -1,0 +1,2 @@
+phonebookSize(0).
+
