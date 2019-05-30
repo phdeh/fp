@@ -6,11 +6,15 @@
 |#
 
 (setq chain (list
-              (list 0 40 0 0 18)
-              (list 40 0 22 6 15)
-              (list 0 22 0 14 0)
-              (list 0 6 14 0 20)
-              (list 18 15 20 0)
+              (list  0  7  9  0  5  0  0  0  0)
+              (list  7  0  0  0  9  6  0  0  0)
+              (list  9  0  0  4  3  0  5  0  0)
+              (list  0  0  4  0  0  0  1  0  3)
+              (list  5  9  3  0  0  0  4  3  8)
+              (list  0  6  0  0  0  0  0  2  0)
+              (list  0  0  5  1  4  0  0  0  9)
+              (list  0  0  0  0  3  2  0  0  6)
+              (list  0  0  0  3  8  0  9  6  0)
               ))
 
 (defun numbers (value)
@@ -131,9 +135,9 @@
        )
        )
 
-(de fun allCuts (from to)
+(defun allCuts (from to)
        (addAllCuts from to (decorate from to (comb nil nil (middle from to)))
                    (minFlow (decorate from to (comb nil nil (middle from to))) most-positive-fixnum))
        )
 
-(allCuts 1 4)
+(allCuts 1 8)

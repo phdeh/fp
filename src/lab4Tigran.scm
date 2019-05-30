@@ -59,6 +59,13 @@
        this_airline
        )
 
+(defun update_airline_by (id filler)
+       (cond
+        ((null (find_airline_by_id id)) nil)
+        (T (funcall filler (find_airline_by_id id)))
+       )
+       )
+
 ; find
 
 (defun find_airline_by_id (id)
@@ -111,6 +118,30 @@
        (setq airlines (find_all_by_checker (lambda (it) (not (equal (airline-departure_time it) departure_time))) airlines))
        )
 
+; update
+
+(defun update_airline_field_airline_company_by_id (airline_company id)
+       (update_airline_by id (lambda (it) (setf (airline-airline_company (car it)) airline_company)))
+       )
+
+(defun update_airline_field_to_by_id (to id)
+       (update_airline_by id (lambda (it) (setf (airline-to (car it)) to)))
+       )
+
+(defun update_airline_field_from_by_id (from id)
+       (update_airline_by id (lambda (it) (setf (airline-from (car it)) from)))
+       )
+
+(defun update_airline_field_arrival_time_by_id (arrival_time id)
+       (update_airline_by id (lambda (it) (setf (airline-arrival_time (car it)) arrival_time)))
+       )
+
+(defun update_airline_field_departure_time_by_id (departure_time id)
+       (update_airline_by id (lambda (it) (setf (airline-departure_time (car it)) departure_time)))
+       )
+
+
+
 ; test
 
 "-------------------"
@@ -118,7 +149,7 @@
 "-------------------"
 "-------------------"
 
-(put_airline "Utair" "Tokyo" "Moscow" "12:10 GMT+9" "8:30 GMT+3")
+(put_airline "Utair" "Tokiyo" "Moscow" "12:10 GMT+9" "8:30 GMT+3")
 
 (put_airline "Aeroflot" "Saint-Petersburg" "Moscow" "12:10 GMT+3" "8:30 GMT+3")
 
@@ -128,20 +159,22 @@
 
 "-------------------"
 "-------------------"
-"searching john"
+"searching Moscow"
 
 (find_airline_by_to "Moscow")
 
 "-------------------"
 "-------------------"
-"searching smith"
+"searching Moscow"
 
 (find_airline_by_from "Moscow")
 
 "-------------------"
 "-------------------"
-"removing john"
+"removing Moscow"
 
 (remove_airline_by_to "Moscow")
+
+(update_airline_field_airline_company_by_id "Aeroflot" 4)
 
 airlines
