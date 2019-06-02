@@ -1,97 +1,163 @@
-phonebookSize(0).
 
+/*
+4. Телефонный справочник организации.
+             PHONEBOOK
+   ---------------------------
+   ID            | ID
+   Телефон       | PHONE
+   Фамилия       | FIRST_NAME
+   Имя           | LAST_NAME
+   E-mail        | E_MAIL
+   Дата рождения | BIRTHDATE
+*/
 
-/* Запуск программы */
-run:-
-     retractall(quotation/3),
-     consult('db.txt'),
-     menu.
+getId(Id) :-
+    not(clause(freeId(_), _)),
+    asserta(freeId(1)),
+    Id = 1.
 
-/* Формирование меню */
-menu:-
-      repeat,
-          write('-----------------------'),nl,nl,
-      write('Quotations of securities'),nl,nl,
-      write('1-Show'),nl,
-      write('2-Add'),nl,
-      write('3-Del'),nl,
-      write('4-Save'),nl,
-      write('5-Search'),nl,
-      write('6-Exit'),nl,
-          write('--------------------------------'),nl,
-      write('Your choise: (1-6) '),
-      read(X),
-      X<7,
-      process(X),
-      X=6,!.
+getId(Id) :-
+    freeId(Id1),
+    retract(freeId(Id1)),
+    Id2 is Id1 + 1,
+    asserta(freeId(Id2)),
+    Id = Id2.
 
-process(1):-view_quotation.
-process(2):-add_quotation,!.
-process(3):-remove_quotation,!.
-process(4):-db_save_quotation,!.
-process(5):-find_quotation,!.
-process(6):-retractall(quotation/3),!.
+putNewPHONEBOOK(PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE) :-
+    getId(Id),
+    assertz(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)).
 
-/* Чтение файла и просмотр базы данных */
-view_quotation:-
-                quotation(Name,Volume,Price),
-                write('Name: '), write(Name),nl,
-                write('Volume: '), write(Volume),nl,
-                write('Price: '), write(Price),nl,
-                write('-------------------------------'),nl.
+loadExample :-
+    putNewPHONEBOOK("+7(800)555-35-35", "John", "Smith", "john.smith@gmail.com", "01.04.1988"),
+    putNewPHONEBOOK("+7(999)999-99-99", "John", "Smith", "john.smith@gmail.com", "01.04.1988"),
+    putNewPHONEBOOK("+7(800)333-35-35", "Jack", "Sparrow", "jsparrow@captain.org", "01.03.1937"),
+    putNewPHONEBOOK("+7(800)111-11-11", "Alexey", "Smith", "a.siegfried@gmail.com", "13.03.1988").
 
-/* Добавление */
-add_quotation:-
-        write('Add new quotation:'),nl,nl,
-        repeat,
-        write('Name: '),
-        read(Name),
-        write('Volume: '),
-        read(Volume),
-        write('Price: '),
-        read(Price),
-        assertz(quotation(Name,Volume,Price)),
-        quest,!.
+listByIds([], []).
+listByIds([Id|Other], Result) :-
+    listByIds(Other, Result1),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    append([[Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE]], Result1, Result).
 
-quest:-
-       write('Add more? y/n '),
-       read(A),
-       answer(A).
+deleteByIds([], []).
+deleteByIds([Id|Other], Result) :-
+    deleteByIds(Other, Result1),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    append([[Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE]], Result1, Result).
 
-answer(_):-fail.
-answer(y):-fail.
-answer(n).
+%%% SHOW ALL
 
-/* Сохранение динамической БД в файл */
-db_save_quotation:-
-        tell('db.txt'),
-        listing(quotation),
-        told,
-        write('File db.txt save!').
+showAll(Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, _, _), Result1),
+    listByIds(Result1, Result).
+find_ID(_, []).
 
-/* Удаление вида металла*/
-remove_quotation:-
-           write('Delete quotation'),nl,nl,
-           write('Name: '),
-           read(Name),
-           retract(quotation(Name,_,_)),
-           write('Quotation delete!'),nl,nl.
+%%% FIND
 
-/* Поиск металла по условию */
-find_quotation:-
-           write('Volume: '),
-           read(SearchVolume),
-           findall(Volume,quotation(Quotation,Volume,Price),Sp),
-           quotation(Quotation,Volume,Price),
-           Volume = SearchVolume,
-           write('Name: '), write(Quotation),nl,
-           write('Volume: '), write(Volume),nl,
-           write('Price: '), write(Price),nl,
-           write('-------------------------------'),nl,
-           fail.
+find_ID(ID,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, _, _), Result1),
+    listByIds(Result1, Result).
+find_ID(_, []).
 
-/* Поиск минимального элемента */
-min([Head|Tail],Rezult):-
-                         min(Tail,Rezult),
-                         Rezult < Head,!.
-min([Head|_],Head).
+find_PHONE(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, By, _, _, _, _), Result1),
+    listByIds(Result1, Result).
+find_PHONE(_, []).
+
+find_FIRST_NAME(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, By, _, _, _), Result1),
+    listByIds(Result1, Result).
+find_FIRST_NAME(_, []).
+
+find_LAST_NAME(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, By, _, _), Result1),
+    listByIds(Result1, Result).
+find_LAST_NAME(_, []).
+
+find_E_MAIL(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, By, _), Result1),
+    listByIds(Result1, Result).
+find_E_MAIL(_, []).
+
+find_BIRTHDATE(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, _, By), Result1),
+    listByIds(Result1, Result).
+find_BIRTHDATE(_, []).
+
+%%% DELETE
+
+delete_ID(ID,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, _, _), Result1),
+    deleteByIds(Result1, Result).
+delete_ID(_, []).
+
+delete_PHONE(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, By, _, _, _, _), Result1),
+    deleteByIds(Result1, Result).
+delete_PHONE(_, []).
+
+delete_FIRST_NAME(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, By, _, _, _), Result1),
+    deleteByIds(Result1, Result).
+delete_FIRST_NAME(_, []).
+
+delete_LAST_NAME(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, By, _, _), Result1),
+    deleteByIds(Result1, Result).
+delete_LAST_NAME(_, []).
+
+delete_E_MAIL(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, By, _), Result1),
+    deleteByIds(Result1, Result).
+delete_E_MAIL(_, []).
+
+delete_BIRTHDATE(By,Result) :-
+    clause(varPHONEBOOK(_, _, _, _, _, _), _),
+    findall(ID, varPHONEBOOK(ID, _, _, _, _, By), Result1),
+    deleteByIds(Result1, Result).
+delete_BIRTHDATE(_, []).
+
+%%% UPDATE
+
+update_PHONE(NewValue, Id) :-
+    clause(varPHONEBOOK(Id, _, _, _, _, _), _),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    assertz(varPHONEBOOK(Id, NewValue, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)).
+
+update_FIRST_NAME(NewValue, Id) :-
+    clause(varPHONEBOOK(Id, _, _, _, _, _), _),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    assertz(varPHONEBOOK(Id, PHONE, NewValue, LAST_NAME, E_MAIL, BIRTHDATE)).
+
+update_LAST_NAME(NewValue, Id) :-
+    clause(varPHONEBOOK(Id, _, _, _, _, _), _),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    assertz(varPHONEBOOK(Id, PHONE, FIRST_NAME, NewValue, E_MAIL, BIRTHDATE)).
+
+update_E_MAIL(NewValue, Id) :-
+    clause(varPHONEBOOK(Id, _, _, _, _, _), _),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    assertz(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, NewValue, BIRTHDATE)).
+
+update_BIRTHDATE(NewValue, Id) :-
+    clause(varPHONEBOOK(Id, _, _, _, _, _), _),
+    varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE),
+    retract(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, BIRTHDATE)),
+    assertz(varPHONEBOOK(Id, PHONE, FIRST_NAME, LAST_NAME, E_MAIL, NewValue)).

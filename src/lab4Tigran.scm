@@ -175,6 +175,10 @@
 
 (remove_airline_by_to "Moscow")
 
+"-------------------"
+"-------------------"
+"updating airline in Samara-Moscow"
+
 (update_airline_field_airline_company_by_id "Aeroflot" 4)
 
 airlines
