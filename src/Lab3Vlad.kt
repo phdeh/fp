@@ -11,7 +11,7 @@ object Lab3Vlad {
         chain(40, 0, 22, 6, 15),
         chain(0, 22, 0, 14, 0),
         chain(0, 6, 14, 0, 20),
-        chain(18, 15, 20, 0)
+        chain(18, 15, 0, 20, 0)
     )
 
     tailrec fun <T> lengthOf(chain: Chain<T>?, value: Int = 0): Int =

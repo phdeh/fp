@@ -11,8 +11,8 @@
        (COND
          ((= X1 X2) T)
          ((= Y1 Y2) T)
-         ;((= (ABS (- X1 X2)) (ABS (- Y1 Y2))) T)
-         ((AND (AND (= (+ (ABS (- X1 X2)) (ABS (- Y1 Y2))) 3) (/= (- X1 X2) 0)) (/= (- Y1 Y2) 0)) T)
+         ((= (ABS (- X1 X2)) (ABS (- Y1 Y2))) T)
+         ;((AND (AND (= (+ (ABS (- X1 X2)) (ABS (- Y1 Y2))) 3) (/= (- X1 X2) 0)) (/= (- Y1 Y2) 0)) T)
          (T NIL)
          )
        )

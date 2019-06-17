@@ -33,12 +33,6 @@ putNewAirline(AIRLINE_COMPANY, TO, FROM, ARRIVAL_TIME, DEPARTURE_TIME) :-
     getId(Id),
     assertz(varAirline(Id, AIRLINE_COMPANY, TO, FROM, ARRIVAL_TIME, DEPARTURE_TIME)).
 
-loadExample :-
-    putNewAirline("Utair", "Tokyo", "Moscow", "12:10 GMT+9", "8:30 GMT+3"),
-    putNewAirline("Aeroflot", "Saint-Petersburg", "Moscow", "12:10 GMT+3", "8:30 GMT+3"),
-    putNewAirline("Russia", "Moscow", "Saint-Petersbug", "12:10 GMT+9", "8:30 GMT+3"),
-    putNewAirline("Utair", "Samara", "Moscow", "12:10 GMT+9", "8:30 GMT+3").
-
 listByIds([], []).
 listByIds([Id|Other], Result) :-
     listByIds(Other, Result1),
@@ -167,3 +161,9 @@ update_DEPARTURE_TIME(NewValue, Id) :-
     varAirline(Id, AIRLINE_COMPANY, TO, FROM, ARRIVAL_TIME, DEPARTURE_TIME),
     retract(varAirline(Id, AIRLINE_COMPANY, TO, FROM, ARRIVAL_TIME, DEPARTURE_TIME)),
     assertz(varAirline(Id, AIRLINE_COMPANY, TO, FROM, ARRIVAL_TIME, NewValue)).
+
+loadExample :-
+    putNewAirline("Utair", "Tokyo", "Moscow", "12:10 GMT+9", "8:30 GMT+3"),
+    putNewAirline("Aeroflot", "Saint-Petersburg", "Moscow", "12:10 GMT+3", "8:30 GMT+3"),
+    putNewAirline("Russia", "Moscow", "Saint-Petersbug", "12:10 GMT+9", "8:30 GMT+3"),
+    putNewAirline("Utair", "Samara", "Moscow", "12:10 GMT+9", "8:30 GMT+3").
